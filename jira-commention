@@ -1,0 +1,34 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+use v5.10;
+
+while (<<>>) {
+	my $line = $_;
+
+	# $line =~ /@([^\s]+)/
+	# print $_;
+
+	$line =~ s/(?<prefix>\s)@(?<email>[^\s]+)/$+{prefix} . jira_user_id_from_email($+{email})/eg;
+
+	print $line;
+}
+
+sub jira_user_id_from_email {
+	my ($email) = @_;
+
+	my $jira_user_id = qx{
+		curl \\
+			--silent \\
+			--user 'user\@example.com:MiY8LFUPxPvxyJJMihTTr8Q4' \\
+			--header 'Accept: application/json' \\
+			--location 'https://your-domain.atlassian.net/rest/api/2/user/search?query=${email}' \\
+		| jq --raw-output '.[0].accountId'
+	};
+	chomp $jira_user_id;
+
+	my $at_mention_text = $jira_user_id;
+
+	return $at_mention_text;
+}
