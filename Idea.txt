@@ -1,0 +1,3 @@
+jira-commention
+
+Program that takes a Jira comment as input with "@" mentions in a certain format, then translates the "@" mentions to Jira user IDs so that the text can be sent as a comment via the Jira API.
