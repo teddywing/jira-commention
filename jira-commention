@@ -1,5 +1,10 @@
 #!/usr/bin/env perl
 
+# jira-commention
+# Replace "@"-prefixed email addresses in the input with Atlassian Wiki
+# formatted account IDs.
+
+
 use strict;
 use warnings;
 use v5.10;
