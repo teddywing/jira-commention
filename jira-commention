@@ -4,6 +4,10 @@ use strict;
 use warnings;
 use v5.10;
 
+use constant {
+	EX_NOUSER => 67,
+};
+
 while (<<>>) {
 	my $line = $_;
 
@@ -27,6 +31,11 @@ sub jira_user_id_from_email {
 		| jq --raw-output '.[0].accountId'
 	};
 	chomp $jira_user_id;
+
+	if ($jira_user_id eq 'null') {
+		say STDERR "error: no Jira user ID for email '$email'";
+		exit EX_NOUSER;
+	}
 
 	my $at_mention_text = $jira_user_id;
 
