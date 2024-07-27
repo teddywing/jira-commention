@@ -20,13 +20,95 @@
 # along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 
+=head1 NAME
+
+jira-commention - Replace email addresses in input with Jira user IDs
+
+=head1 SYNOPSIS
+
+jira-commention [options] [file...]
+
+Options:
+
+  --login       Jira login email address
+  --token       Jira API token
+  --endpoint    Jira site URL host (e.g. example.atlassian.net)
+  --help        print help
+
+=head1 DESCRIPTION
+
+Convert specially formatted email addresses in the input into Jira user IDs by
+searching with the Jira API for each user.
+
+If no files are specified, input will be read from standard input.
+
+=head1 OPTIONS
+
+=over 8
+
+=item --login
+
+Jira login email address.
+
+=item --token
+
+Jira API token. Obtained from:
+https://id.atlassian.com/manage-profile/security/api-tokens
+
+=item --endpoint
+
+The team-specific Atlassian host (e.g. B<example.atlassian.net>).
+
+=item -h, --help
+
+Print usage help.
+
+=back
+
+=cut
+
+
 use strict;
 use warnings;
 use v5.10;
 
+use Getopt::Long;
+use Pod::Usage;
+
 use constant {
+	EX_USAGE => 64,
 	EX_NOUSER => 67,
 };
+
+my $auth_email = '';
+my $token = '';
+my $jira_endpoint = '';
+my $opt_help = 0;
+
+GetOptions(
+	'login=s' => \$auth_email,
+	'token=s' => \$token,
+	'endpoint=s' => \$jira_endpoint,
+	'h|help' => \$opt_help,
+)
+	or die('argument error');
+
+if ($opt_help) {
+	pod2usage(-verbose => 0, -exitval => 0);
+}
+
+if ($auth_email eq '') {
+	say STDERR "error: missing required argument '--login'";
+	exit EX_USAGE;
+}
+if ($token eq '') {
+	say STDERR "error: missing required argument '--token'";
+	exit EX_USAGE;
+}
+if ($jira_endpoint eq '') {
+	say STDERR "error: missing required argument '--endpoint'";
+	exit EX_USAGE;
+}
 
 while (<<>>) {
 	my $line = $_;
@@ -42,9 +124,9 @@ sub jira_user_id_from_email {
 	my $jira_user_id = qx{
 		curl \\
 			--silent \\
-			--user 'user\@example.com:MiY8LFUPxPvxyJJMihTTr8Q4' \\
+			--user '${auth_email}:${token}' \\
 			--header 'Accept: application/json' \\
-			--location 'https://your-domain.atlassian.net/rest/api/2/user/search?query=${email}' \\
+			--location 'https://${jira_endpoint}/rest/api/2/user/search?query=${email}' \\
 		| jq --raw-output '.[0].accountId'
 	};
 	chomp $jira_user_id;
