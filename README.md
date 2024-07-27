@@ -7,6 +7,9 @@ searching using the Jira API.
 Email addresses prefixed with an “@” character and followed by whitespace are
 replaced with the Jira user ID corresponding to that email address.
 
+The resulting output can be sent as text via the Jira REST v2 API with properly
+formatted “@” mentions.
+
 
 ## Usage
 The following command replaces the “@”-prefixed email address in the input with
