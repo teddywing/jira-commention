@@ -33,7 +33,8 @@ Options:
   --login       Jira login email address
   --token       Jira API token
   --endpoint    Jira site URL host (e.g. example.atlassian.net)
-  --help        print help
+  -h, --help    print help
+  -V, --version show the program version
 
 =head1 DESCRIPTION
 
@@ -66,6 +67,10 @@ The team-specific Atlassian host (e.g. B<example.atlassian.net>).
 
 Print usage help.
 
+=item -V, --version
+
+Print the program version.
+
 =back
 
 =cut
@@ -79,6 +84,10 @@ use Getopt::Long;
 use Pod::Usage;
 
 use constant {
+	VERSION => '0.0.1',
+};
+
+use constant {
 	EX_USAGE => 64,
 	EX_NOUSER => 67,
 };
@@ -87,17 +96,24 @@ my $auth_email = '';
 my $token = '';
 my $jira_endpoint = '';
 my $opt_help = 0;
+my $opt_version = 0;
 
 GetOptions(
 	'login=s' => \$auth_email,
 	'token=s' => \$token,
 	'endpoint=s' => \$jira_endpoint,
 	'h|help' => \$opt_help,
+	'V|version' => \$opt_version,
 )
 	or die('argument error');
 
 if ($opt_help) {
 	pod2usage(-verbose => 0, -exitval => 0);
+}
+
+if ($opt_version) {
+	say VERSION;
+	exit;
 }
 
 if ($auth_email eq '') {
