@@ -40,7 +40,10 @@ Options:
 Convert specially formatted email addresses in the input into Jira user IDs by
 searching with the Jira API for each user.
 
-If no files are specified, input will be read from standard input.
+Email addresses prefixed with an "@" character and followed by whitespace are
+replaced with the Jira user ID corresponding to that email address.
+
+If no file arguments are specified, input will be read from standard input.
 
 =head1 OPTIONS
 
