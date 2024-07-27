@@ -37,7 +37,7 @@ sub jira_user_id_from_email {
 		exit EX_NOUSER;
 	}
 
-	my $at_mention_text = $jira_user_id;
+	my $at_mention_text = '[~accountid:' . $jira_user_id . ']';
 
 	return $at_mention_text;
 }
