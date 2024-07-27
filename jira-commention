@@ -11,9 +11,6 @@ use constant {
 while (<<>>) {
 	my $line = $_;
 
-	# $line =~ /@([^\s]+)/
-	# print $_;
-
 	$line =~ s/(?<prefix>\s)@(?<email>[^\s]+)/$+{prefix} . jira_user_id_from_email($+{email})/eg;
 
 	print $line;
