@@ -1,0 +1,12 @@
+CHANGELOG
+=========
+
+v0.0.2 (2024-08-14):
+	Fixes:
+
+	* Mentions can now appear at the start of a line.
+
+v0.0.1 (2024-07-27):
+	First public release.
+
+ vim:tw=80:comments=:fo+=n:formatlistpat=^\\s*\\*\\s*
