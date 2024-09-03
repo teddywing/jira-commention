@@ -1,6 +1,12 @@
 CHANGELOG
 =========
 
+v0.0.3 (2024-09-03):
+	Fixes:
+
+	* Text following an "@" symbol that doesn't contain an "@" symbol will not
+	  be filtered as a mention.
+
 v0.0.2 (2024-08-14):
 	Fixes:
 
